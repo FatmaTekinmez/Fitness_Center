@@ -1,8 +1,242 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Ana Sayfa";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+@section Styles {
+    <style>
+        .hero-big-title {
+            font-size: 3rem;
+            font-weight: 800;
+            line-height: 1.1;
+        }
+
+        .hero-highlight {
+            color: #f97316;
+        }
+
+        .hero-subtitle {
+            font-size: 1.05rem;
+            color: #9ca3af;
+            max-width: 34rem;
+        }
+
+        .section-title {
+            font-weight: 700;
+            letter-spacing: .08em;
+            font-size: .9rem;
+            color: #f97316;
+        }
+
+        .program-card {
+            background: radial-gradient(circle at top left, rgba(248, 113, 113, 0.08), transparent),
+                        radial-gradient(circle at bottom right, rgba(52, 211, 153, 0.08), transparent),
+                        #020617;
+            border-radius: 1rem;
+            padding: 1.3rem 1.4rem;
+            border: 1px solid rgba(148, 163, 184, 0.35);
+            height: 100%;
+        }
+
+        .program-card h5 {
+            font-size: 1.02rem;
+            font-weight: 600;
+        }
+
+        .program-card p {
+            font-size: .9rem;
+            color: #9ca3af;
+        }
+
+        .tag-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: .35rem;
+            border-radius: 999px;
+            padding: .2rem .75rem;
+            background: rgba(15, 23, 42, 0.9);
+            border: 1px solid rgba(148, 163, 184, 0.4);
+            font-size: .78rem;
+            color: #e5e7eb;
+        }
+
+        .why-section {
+            background: radial-gradient(circle at top left, rgba(248, 250, 252, 0.08), transparent),
+                        #020617;
+            border-radius: 1.5rem;
+            border: 1px solid rgba(148, 163, 184, 0.35);
+        }
+
+        .why-section img {
+            border-radius: 1.2rem;
+            object-fit: cover;
+            width: 100%;
+            max-height: 260px;
+        }
+    </style>
+}
+
+<div class="hero-section">
+    <div class="row align-items-center g-5 w-100">
+        <!-- Sol taraf: metin -->
+        <div class="col-lg-6">
+            <p class="mb-2 section-title">BEST FITNESS IN THE TOWN</p>
+
+            <h1 class="hero-big-title mb-3">
+                MAKE YOUR<br />
+                <span class="hero-highlight">BODY SHAPE</span>
+            </h1>
+
+            <p class="hero-subtitle mb-4">
+                Kendini daha güçlü, daha enerjik ve daha özgüvenli hissetmek için ilk adımı at.
+                Şehrindeki spor salonlarını keşfet, sana en uygun programı seç ve yapay zekâ
+                destekli koçluğumuzla hayalindeki bedene adım adım yaklaş.
+            </p>
+
+            <div class="d-flex flex-wrap gap-2 mb-4">
+                @if (User.Identity?.IsAuthenticated ?? false)
+                {
+                    <a class="btn btn-primary btn-lg"
+                       asp-controller="Musteri" asp-action="GymCenters">
+                        Spor Salonlarını Keşfet
+                    </a>
+                    <a class="btn btn-outline-light btn-lg"
+                       asp-controller="Musteri" asp-action="AiRecommendation">
+                        Yapay Zekâ Öneri Al
+                    </a>
+                }
+                else
+                {
+                    <a class="btn btn-primary btn-lg"
+                       asp-area="Identity" asp-page="/Account/Register">
+                        Üye Ol ve Başla
+                    </a>
+                    <a class="btn btn-outline-light btn-lg"
+                       asp-controller="Musteri" asp-action="GymCenters">
+                        Spor Salonlarını Keşfet
+                    </a>
+                }
+            </div>
+
+            <div class="d-flex flex-wrap gap-2">
+                <span class="tag-pill">
+                    🧠 Yapay zekâ destekli egzersiz koçu
+                </span>
+                <span class="tag-pill">
+                    🏋️ Kişiye özel antrenman programları
+                </span>
+                <span class="tag-pill">
+                    💚 Hedefine göre kilo verme / alma desteği
+                </span>
+            </div>
+        </div>
+
+        <!-- Sağ taraf: görsel -->
+        <div class="col-lg-6">
+            <div class="glass-card p-0 overflow-hidden">
+                <!-- buraya sonra gerçek bir görsel koyabilirsin -->
+                <img src="https://via.placeholder.com/900x550?text=Your+Dream+Body"
+                     alt="Fitness" class="w-100" />
+            </div>
+        </div>
+    </div>
 </div>
+
+<hr class="border-secondary my-5" />
+
+<!-- PROGRAM / HİSSETTİRDİKLER -->
+<section class="mb-5">
+    <div class="text-center mb-4">
+        <p class="section-title mb-1">EXPLORE OUR PROGRAM</p>
+        <h3 class="fw-bold mb-2">Sana Uygun Programı Seç</h3>
+        <p class="text-secondary mx-auto" style="max-width: 36rem;">
+            İster sıkılaş, ister kilo ver, ister kas hacmi kazan. Farklı
+            hedeflere göre hazırlanmış programlarımız ve kişiye özel önerilerimizle
+            yalnızca spor yapmayacak, sürecin her anında destekleneceksin.
+        </p>
+    </div>
+
+    <div class="row g-3">
+        <div class="col-md-3 col-sm-6">
+            <div class="program-card">
+                <div class="mb-2">💪</div>
+                <h5>Strength</h5>
+                <p>
+                    Daha güçlü bir vücut için ağırlık çalışmaları, fonksiyonel
+                    egzersizler ve adım adım artan antrenman yoğunluğu.
+                </p>
+                <span class="small text-secondary">Hedef: güç ve dayanıklılık</span>
+            </div>
+        </div>
+
+        <div class="col-md-3 col-sm-6">
+            <div class="program-card">
+                <div class="mb-2">🏃</div>
+                <h5>Physical Fitness</h5>
+                <p>
+                    Kondisyonunu artırmak isteyenler için kardio, full body
+                    antrenmanlar ve seni yormadan ilerleyen planlar.
+                </p>
+                <span class="small text-secondary">Hedef: formda ve enerjik hissetmek</span>
+            </div>
+        </div>
+
+        <div class="col-md-3 col-sm-6">
+            <div class="program-card">
+                <div class="mb-2">🔥</div>
+                <h5>Fat Loss</h5>
+                <p>
+                    Yağ yakımına odaklanan, kalori hesabı ve tempo kontrolü
+                    yapay zekâ ile desteklenen özel programlar.
+                </p>
+                <span class="small text-secondary">
+                    Giriş yaptıktan sonra AI ile kişisel önerilerini al.
+                </span>
+            </div>
+        </div>
+
+        <div class="col-md-3 col-sm-6">
+            <div class="program-card">
+                <div class="mb-2">🍽️</div>
+                <h5>Weight Gain</h5>
+                <p>
+                    Sağlıklı şekilde kilo almak ve kas hacmini artırmak isteyenler
+                    için hacim odaklı egzersiz ve beslenme önerileri.
+                </p>
+                <span class="small text-secondary">
+                    Programını sana özel set ve tekrar sayılarıyla birlikte gör.
+                </span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- NEDEN BİZ? -->
+<section class="why-section p-4 p-md-5 mb-4">
+    <div class="row g-4 align-items-center">
+        <div class="col-md-6">
+            <p class="section-title mb-2 text-uppercase">WHY JOIN US?</p>
+            <h3 class="fw-bold mb-3">Hedefine Yalnız Yürümeyeceksin</h3>
+            <p class="text-secondary mb-3">
+                Sadece bir spor salonuna gitmek değil, gerçekten sonuç almak istiyorsun.
+                Biz de tam burada devreye giriyoruz. Antrenörlerin desteğini, akıllı
+                randevu sistemiyle birleşen yapay zekâ önerileriyle birleştiriyoruz.
+            </p>
+            <ul class="text-secondary small mb-3">
+                <li>Vücut tipine ve hedefine göre kişiselleştirilmiş egzersiz önerileri</li>
+                <li>Uygun saatlerde kolayca randevu oluşturma (giriş yaptıktan sonra)</li>
+                <li>Güvenli üye girişi ve sadece sana özel panel</li>
+                <li>Motivasyonunu yüksek tutan, adım adım ilerleyen planlar</li>
+            </ul>
+            <p class="mb-0 small text-secondary">
+                Yapay zekâ destekli koçluk ve randevu özellikleri
+                <strong class="text-success">giriş yapan üyeler</strong> içindir.
+                Şu an hemen spor salonlarını keşfederek ilk adımı atabilirsin.
+            </p>
+        </div>
+
+        <div class="col-md-6">
+            <img src="https://via.placeholder.com/900x400?text=Feel+Stronger+Every+Day"
+                 alt="Gym Experience" />
+        </div>
+    </div>
+</section>
