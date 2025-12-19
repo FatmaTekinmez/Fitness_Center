@@ -1,0 +1,43 @@
+﻿@model FitnessCenter.Models.Service
+
+@{
+    ViewData["Title"] = "Create Service";
+}
+
+<h2>Create New Service</h2>
+
+<form asp-action="CreateService" method="post">
+
+    <div class="form-group">
+        <label asp-for="Name"></label>
+        <input asp-for="Name" class="form-control" />
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="DurationMinutes"></label>
+        <input asp-for="DurationMinutes" type="number" class="form-control" />
+        <span asp-validation-for="DurationMinutes" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Price"></label>
+        <input asp-for="Price" type="number" step="0.01" class="form-control" />
+        <span asp-validation-for="Price" class="text-danger"></span>
+    </div>
+
+    <!-- 🔥 EKSİK OLAN KISIM -->
+    <div class="form-group">
+        <label asp-for="FitnessCenterId">Gym Center</label>
+        <select asp-for="FitnessCenterId"
+                asp-items="ViewBag.GymCenters"
+                class="form-control">
+            <option value="">-- Gym Seç --</option>
+        </select>
+        <span asp-validation-for="FitnessCenterId" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Create Service</button>
+</form>
+
+

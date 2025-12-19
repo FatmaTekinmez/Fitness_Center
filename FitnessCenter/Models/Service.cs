@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+using System.ComponentModel.DataAnnotations;
 
 namespace FitnessCenter.Models
 {
@@ -12,8 +13,12 @@ namespace FitnessCenter.Models
         [DataType(DataType.Currency)]
         public decimal Price { get; set; }
         public int FitnessCenterId { get; set; }
+        public int GymCenterId { get; set; }
+        [ValidateNever]
         public GymCenter GymCenter { get; set; }
+        [ValidateNever]
         public ICollection<TrainerService> TrainerServices { get; set; }
+        [ValidateNever]
         public ICollection<Appointment> Appointments { get; set; }
     }
 }

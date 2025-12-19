@@ -1,0 +1,17 @@
+﻿@model List<FitnessCenter.Models.GymCenter>
+
+<a asp-action="CreateGymCenter">Gym Ekle</a>
+
+@foreach (var center in Model)
+{
+    <div class="service-item">
+        <h3>@center.Name</h3>
+        <p>@center.WorkingHours</p>
+        <p>@center.Address</p>
+        <button class="edit-center" data-id="@center.Id">Edit</button>
+        <button class="delete-center" data-id="@center.Id">Delete</button>
+    </div>
+}
+
+
+

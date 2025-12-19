@@ -1,0 +1,17 @@
+﻿@model List<FitnessCenter.Models.Service>
+
+<a asp-action ="CreateService" >Servis Ekle</a>
+
+@foreach(var service in Model)
+{
+    <div class="service-item">
+        <h3>@service.Name</h3>
+        <p>@service.DurationMinutes</p>
+        <p>Price: @service.Price.ToString("C")</p>
+        <button class="edit-service" data-id="@service.Id">Edit</button>
+        <button class="delete-service" data-id="@service.Id">Delete</button>
+    </div>
+}
+
+
+

@@ -1,5 +1,7 @@
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace FitnessCenter.Models
 {
@@ -13,7 +15,9 @@ namespace FitnessCenter.Models
         public string Address { get; set; }
         [StringLength(30)]
         public string WorkingHours { get; set; }
+        [ValidateNever]
         public ICollection<Service> Services { get; set; }
+        [ValidateNever]
         public ICollection<Trainer> Trainers { get; set; }
     }
 }
