@@ -9,7 +9,7 @@ namespace FitnessCenter.Models
 
         [Required, StringLength(50)]
         public string Name { get; set; }
-        public string SpecialtyIds { get; set; } 
+        public string SpecialtyIds { get; set; } = "";
         public int FitnessCenterId { get; set; }
         public GymCenter GymCenter { get; set; }
         public ICollection<TrainerService> TrainerServices { get; set; }

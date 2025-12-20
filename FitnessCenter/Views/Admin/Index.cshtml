@@ -1,6 +1,99 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
+﻿@{
+    ViewData["Title"] = "Admin Paneli";
 }
-admin panel
+
+<div class="container mt-4">
+    <div class="glass-card p-4">
+        <h2 class="mb-3">🏋️‍♂️ Fitness Center Admin Paneli</h2>
+        <p class="text-muted">
+            Spor salonlarını, hizmetleri ve kullanıcıları buradan yönetebilirsin.
+        </p>
+
+        <hr class="border-secondary" />
+
+        <div class="row g-3 mt-2">
+
+            <div class="col-md-3">
+                <div class="p-3 bg-dark bg-opacity-50 rounded border border-secondary h-100 d-flex flex-column">
+                    <h5>🏢 Spor Salonları</h5>
+                    <p class="flex-grow-1 text-muted small">
+                        Yeni salon ekle, mevcut salonları düzenle veya incele.
+                    </p>
+                    <div class="mt-auto">
+                        <a asp-action="GetAllGymCenters" class="btn btn-outline-light btn-sm w-100 mb-2">
+                            Salonları Listele
+                        </a>
+                        <a asp-action="CreateGymCenter" class="btn btn-primary btn-sm w-100">
+                            Yeni Salon Oluştur
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="p-3 bg-dark bg-opacity-50 rounded border border-secondary h-100 d-flex flex-column">
+                    <h5>💪 Hizmetler</h5>
+                    <p class="flex-grow-1 text-muted small">
+                        PT, grup dersi, kardiyo paketi gibi hizmetleri yönet.
+                    </p>
+                    <div class="mt-auto">
+                        <a asp-action="GetAllServices" class="btn btn-outline-light btn-sm w-100 mb-2">
+                            Hizmetleri Listele
+                        </a>
+                        <a asp-action="CreateService" class="btn btn-primary btn-sm w-100">
+                            Yeni Hizmet Oluştur
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="p-3 bg-dark bg-opacity-50 rounded border border-secondary h-100 d-flex flex-column">
+                    <h5>👤 Kullanıcılar</h5>
+                    <p class="flex-grow-1 text-muted small">
+                        Sisteme kayıtlı kullanıcıları ve bağlı oldukları salonları incele.
+                    </p>
+                    <div class="mt-auto">
+                        <a asp-action="Users" class="btn btn-outline-light btn-sm w-100">
+                            Kullanıcıları Listele
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+
+
+            <div class="col-md-3">
+                <div class="p-3 bg-dark bg-opacity-50 rounded border border-secondary h-100 d-flex flex-column">
+                    <h5>🏋️‍♀️ Antrenör İşlemleri</h5>
+                    <p class="flex-grow-1 text-muted small">
+                        Antrenör ekle, düzenle, sil veya antrenör listesini görüntüle.
+                    </p>
+
+                    <div class="mt-auto">
+                        <a asp-controller="Trainer" asp-action="Index"
+                           class="btn btn-outline-light btn-sm w-100 mb-2">
+                            Antrenörleri Listele
+                        </a>
+
+                        <a asp-controller="Trainer" asp-action="Create"
+                           class="btn btn-primary btn-sm w-100 mb-2">
+                            Yeni Antrenör Ekle
+                        </a>
+                       
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="p-3 bg-dark bg-opacity-50 rounded border border-secondary h-100 d-flex flex-column">
+                    <h5>📊 Özet</h5>
+                    <p class="text-muted small">
+                        Bu kısmı sonra istatistikler için kullanırız (toplam kullanıcı, toplam salon, randevu sayısı vb.).
+                    </p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

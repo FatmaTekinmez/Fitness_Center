@@ -1,0 +1,23 @@
+﻿@model FitnessCenter.Models.Trainer
+
+@{
+    ViewData["Title"] = "Antrenör Sil";
+}
+
+<div class="glass-card p-4">
+    <h2 class="mb-3 text-danger">Antrenör Sil</h2>
+
+    <p>
+        <strong>@Model.Name</strong> isimli antrenörü silmek istediğinden emin misin?
+    </p>
+
+    <p class="text-muted">
+        Bağlı olduğu spor salonu:
+        <strong>@Model.GymCenter?.Name</strong>
+    </p>
+
+    <form asp-action="Delete" asp-route-id="@Model.Id" method="post">
+        <button type="submit" class="btn btn-danger">Evet, Sil</button>
+        <a asp-action="Index" class="btn btn-outline-light ms-2">Vazgeç</a>
+    </form>
+</div>

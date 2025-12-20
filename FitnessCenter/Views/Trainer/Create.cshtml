@@ -1,0 +1,70 @@
+﻿@model FitnessCenter.Models.ViewModels.TrainerCreateViewModel
+
+@{
+    ViewData["Title"] = "Yeni Antrenör";
+}
+
+<div class="glass-card p-4">
+    <h2 class="mb-3">Yeni Antrenör Ekle</h2>
+
+    <form asp-action="Create" method="post">
+        <div asp-validation-summary="All" class="text-danger"></div>
+
+        <div class="mb-3">
+            <label asp-for="Name" class="form-label"></label>
+            <input asp-for="Name" class="form-control" />
+            <span asp-validation-for="Name" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="FitnessCenterId" class="form-label"></label>
+            <select asp-for="FitnessCenterId" class="form-select"
+                    asp-items="@(new SelectList(Model.GymCenters, "Id", "Name"))">
+                <option value="">-- Spor Salonu Seçin --</option>
+            </select>
+            <span asp-validation-for="FitnessCenterId" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Verdiği Servisler</label>
+            <div class="row">
+                @foreach (var s in Model.Services)
+                {
+                    <div class="col-md-4">
+                        <div class="form-check">
+                            <input class="form-check-input"
+                                   type="checkbox"
+                                   name="SelectedServiceIds"
+                                   value="@s.Id" />
+                            <label class="form-check-label">@s.Name</label>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+
+        <hr />
+
+        <h5 class="mb-3">Müsaitlik Zamanı</h5>
+
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label asp-for="AvailableFrom" class="form-label"></label>
+                <input asp-for="AvailableFrom" type="datetime-local" class="form-control" />
+                <span asp-validation-for="AvailableFrom" class="text-danger"></span>
+            </div>
+            <div class="col-md-6 mb-3">
+                <label asp-for="AvailableTo" class="form-label"></label>
+                <input asp-for="AvailableTo" type="datetime-local" class="form-control" />
+                <span asp-validation-for="AvailableTo" class="text-danger"></span>
+            </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary mt-3">Kaydet</button>
+        <a asp-action="Index" class="btn btn-outline-light mt-3 ms-2">Geri</a>
+    </form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
