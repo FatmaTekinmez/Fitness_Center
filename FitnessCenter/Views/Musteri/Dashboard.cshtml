@@ -1,0 +1,74 @@
+﻿@model FitnessCenter.Models.MusteriDashboardViewModel
+
+@{
+    ViewData["Title"] = "Profilim";
+}
+
+<div class="container mt-4">
+
+    <div class="glass-card p-4 shadow-lg">
+
+        <h2 class="text-success fw-bold mb-3">
+            Hoş geldin, @Model.FullName 👋
+        </h2>
+
+        <hr class="border-secondary" />
+
+        <!-- Kullanıcı Bilgileri -->
+        <div class="row text-light">
+
+            <div class="col-md-4 mb-4">
+                <div class="p-3 rounded bg-dark bg-opacity-50 border border-secondary">
+                    <h5 class="text-muted mb-1">📏 Boy</h5>
+                    <p class="fs-5 fw-bold">@Model.HeightCm cm</p>
+                </div>
+            </div>
+
+            <div class="col-md-4 mb-4">
+                <div class="p-3 rounded bg-dark bg-opacity-50 border border-secondary">
+                    <h5 class="text-muted mb-1">⚖️ Kilo</h5>
+                    <p class="fs-5 fw-bold">@Model.WeightKg kg</p>
+                </div>
+            </div>
+
+            <div class="col-md-4 mb-4">
+                <div class="p-3 rounded bg-dark bg-opacity-50 border border-secondary">
+                    <h5 class="text-muted mb-1">📊 BMI (Vücut Kitle İndeksi)</h5>
+
+                    @if (Model.BMI.HasValue)
+                    {
+                        <p class="fs-5 fw-bold text-success">@Model.BMI.Value.ToString("0.0")</p>
+                    }
+                    else
+                    {
+                        <p class="text-warning">Eksik bilgi 🟡</p>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <hr class="border-secondary" />
+
+        <!-- Salon Bilgisi -->
+        <div class="mt-3">
+            <h5 class="text-light">🏋️‍♀️ Kayıtlı Olduğun Spor Salonu:</h5>
+            <p class="fs-4 fw-bold text-success">@Model.GymCenterName</p>
+        </div>
+
+        <hr class="border-secondary" />
+
+        <!-- Butonlar -->
+        <div class="mt-4">
+            <a asp-controller="Musteri" asp-action="GymCenters"
+               class="btn btn-outline-light me-2">
+                Spor Salonlarını Gör
+            </a>
+
+            <a asp-controller="Musteri" asp-action="CreateAppointment"
+               class="btn btn-primary">
+                Randevu Al 📅
+            </a>
+        </div>
+
+    </div>
+</div>

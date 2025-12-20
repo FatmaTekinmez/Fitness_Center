@@ -1,0 +1,72 @@
+﻿@model FitnessCenter.Models.RegisterViewModel
+@{
+    ViewData["Title"] = "Üye Ol";
+}
+
+<div class="row justify-content-center">
+    <div class="col-md-6 col-lg-5">
+        <h2 class="mb-3">Üye Ol</h2>
+        <p class="text-secondary mb-4">
+            Hesap oluştur, sana en uygun spor salonunu seç ve hedef bedenine doğru ilk adımı at.
+        </p>
+
+        <form asp-action="Register" method="post">
+            <div asp-validation-summary="All" class="text-danger mb-3"></div>
+
+            <div class="mb-3">
+                <label asp-for="FullName" class="form-label"></label>
+                <input asp-for="FullName" class="form-control" />
+                <span asp-validation-for="FullName" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Email" class="form-label"></label>
+                <input asp-for="Email" class="form-control" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="PhoneNumber" class="form-label"></label>
+                <input asp-for="PhoneNumber" class="form-control" />
+                <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Password" class="form-label"></label>
+                <input asp-for="Password" class="form-control" />
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="ConfirmPassword" class="form-label"></label>
+                <input asp-for="ConfirmPassword" class="form-control" />
+                <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+            </div>
+
+            <!-- SPOR SALONU SEÇİMİ -->
+            <div class="mb-3">
+                <label asp-for="GymCenterId" class="form-label"></label>
+                <select asp-for="GymCenterId"
+                        asp-items="Model.GymCenters"
+                        class="form-select">
+                    <option value="">Spor salonu seçin...</option>
+                </select>
+                <span asp-validation-for="GymCenterId" class="text-danger"></span>
+            </div>
+
+            <button type="submit" class="btn btn-primary w-100 mb-2">
+                Hesap Oluştur
+            </button>
+
+            <p class="small text-secondary mb-0">
+                Zaten hesabın var mı?
+                <a asp-controller="Account" asp-action="Login"
+                   class="text-decoration-none text-success">Giriş yap</a>.
+            </p>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
