@@ -1,0 +1,87 @@
+﻿@model IEnumerable<FitnessCenter.Models.Appointment>
+
+@{
+    ViewData["Title"] = "Randevu Yönetimi";
+}
+
+<div class="glass-card p-4">
+    <h2 class="mb-3">Randevu Yönetimi</h2>
+
+    @if (!Model.Any())
+    {
+        <p class="text-muted">Sistemde hiç randevu yok.</p>
+    }
+    else
+    {
+        <table class="table table-dark table-striped table-bordered align-middle">
+            <thead>
+                <tr>
+                    <th>Üye</th>
+                    <th>Salon</th>
+                    <th>Antrenör</th>
+                    <th>Hizmet</th>
+                    <th>Başlangıç</th>
+                    <th>Bitiş</th>
+                    <th>Ücret</th>
+                    <th>Antrenör Müsaitlikleri</th>
+                    <th>Durum</th>
+                    <th>İşlemler</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var a in Model)
+                {
+                    <tr>
+                        <td>@a.ApplicationUser?.FullName (@a.ApplicationUser?.Email)</td>
+                        <td>@a.Trainer?.GymCenter?.Name</td>
+                        <td>@a.Trainer?.Name</td>
+                        <td>@a.Service?.Name</td>
+                        <td>@a.StartTime.ToString("dd.MM.yyyy HH:mm")</td>
+                        <td>@a.EndTime.ToString("dd.MM.yyyy HH:mm")</td>
+                        <td>@a.PriceAtBooking.ToString("0.00") ₺</td>
+                        <td>
+                            @if (a.Trainer?.Availabilities != null && a.Trainer.Availabilities.Any())
+                            {
+                                @Html.Raw(string.Join("<br />",
+                                a.Trainer.Availabilities
+                                .Select(av => $"{av.AvailableFrom:dd.MM HH:mm} - {av.AvailableTo:dd.MM HH:mm}")
+                                        ))
+                                        }
+                            else
+                            {
+                                <span class="text-muted small">Tanımlı değil</span>
+                            }
+                        </td>
+                        <td>
+                            @if (a.IsApproved)
+                            {
+                                <span class="badge bg-success">Onaylandı</span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-warning text-dark">Onay Bekliyor</span>
+                            }
+                        </td>
+                        <td>
+                            @if (!a.IsApproved)
+                            {
+                                <form asp-action="ApproveAppointment" asp-route-id="@a.Id" method="post" class="d-inline">
+                                    <button type="submit" class="btn btn-sm btn-success">
+                                        Onayla
+                                    </button>
+                                </form>
+                            }
+
+                            <form asp-action="DeleteAppointment" asp-route-id="@a.Id" method="post" class="d-inline ms-1">
+                                <button type="submit" class="btn btn-sm btn-danger"
+                                        onclick="return confirm('Bu randevuyu silmek istediğine emin misin?');">
+                                    Sil
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</div>

@@ -1,0 +1,93 @@
+﻿@model IEnumerable<FitnessCenter.Models.Appointment>
+
+@{
+    ViewData["Title"] = "Randevularım";
+}
+
+<div class="glass-card p-4">
+    <h2 class="mb-3">Randevularım</h2>
+
+    @if (TempData["Message"] != null)
+    {
+        <div class="alert alert-success">
+            @TempData["Message"]
+        </div>
+    }
+
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger">
+            @TempData["Error"]
+        </div>
+    }
+
+    @if (Model == null || !Model.Any())
+    {
+        <p class="text-muted">
+            Henüz bir randevun yok.
+            <a asp-controller="Musteri" asp-action="GymCenters" class="link-light">
+                Spor salonlarına göz at ve randevu al. 💪
+            </a>
+        </p>
+    }
+    else
+    {
+        <div class="list-group list-group-flush">
+            @foreach (var appt in Model)
+            {
+                <div class="list-group-item bg-transparent text-light border-secondary mb-2 rounded">
+                    <div class="d-flex justify-content-between align-items-start">
+                        <div>
+                            <h5 class="mb-1">
+                                @appt.Service?.Name
+                                <small class="text-muted">(@appt.Trainer?.Name)</small>
+                            </h5>
+                            <p class="mb-1 small text-muted">
+                                📅 @appt.StartTime.ToString("dd.MM.yyyy HH:mm")
+                                - @appt.EndTime.ToString("HH:mm")
+                            </p>
+                            <p class="mb-0 small text-muted">
+                                Ücret: @appt.PriceAtBooking.ToString("0.00") ₺
+                            </p>
+                        </div>
+
+                        <div class="text-end">
+                            <div class="mb-2">
+                                @if (appt.IsApproved)
+                                {
+                                    <span class="badge bg-success">Onaylandı</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-warning text-dark">Onay Bekliyor</span>
+                                }
+                            </div>
+
+                            @if (appt.StartTime > DateTime.Now)
+                            {
+                                <form asp-action="CancelAppointment"
+                                      asp-controller="Musteri"
+                                      asp-route-id="@appt.Id"
+                                      method="post"
+                                      class="d-inline">
+                                    @Html.AntiForgeryToken()
+                                    <button type="submit"
+                                            class="btn btn-sm btn-outline-danger"
+                                            onclick="return confirm('Bu randevuyu iptal etmek istediğine emin misin?');">
+                                        Randevuyu İptal Et
+                                    </button>
+                                </form>
+                            }
+                            else
+                            {
+                                <small class="text-muted d-block">
+                                    Geçmiş randevu
+                                </small>
+                            }
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>

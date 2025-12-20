@@ -59,15 +59,28 @@
 
         <!-- Butonlar -->
         <div class="mt-4">
+
             <a asp-controller="Musteri" asp-action="GymCenters"
                class="btn btn-outline-light me-2">
                 Spor Salonlarını Gör
             </a>
 
-            <a asp-controller="Musteri" asp-action="CreateAppointment"
-               class="btn btn-primary">
-                Randevu Al 📅
-            </a>
+            @if (Model.GymCenterId.HasValue)
+            {
+                <a asp-controller="Musteri"
+                   asp-action="BookAppointment"
+                   asp-route-gymCenterId="@Model.GymCenterId"
+                   class="btn btn-primary">
+                    Randevu Al 📅
+                </a>
+            }
+            else
+            {
+                <button class="btn btn-primary" disabled>
+                    Randevu Al 📅 (Önce bir spor salonuna kaydol)
+                </button>
+            }
+
         </div>
 
     </div>

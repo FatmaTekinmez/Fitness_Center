@@ -1,4 +1,4 @@
-using FitnessCenter.Data;
+﻿using FitnessCenter.Data;
 using FitnessCenter.Models;
 using Microsoft.AspNetCore.Identity;
 using FitnessCenter.Services;
@@ -33,15 +33,15 @@ builder.Services.ConfigureApplicationCookie(options =>
 
 
 
-// Gemini ayarlar�n� oku
+// Gemini ayarlarını oku
 builder.Services.Configure<GeminiOptions>(
     builder.Configuration.GetSection("Gemini"));
 
-// HttpClient fabrikas�n� kaydet
+// HttpClient fabrikasını kaydet
 builder.Services.AddHttpClient();          // ?? sadece bu
 
 // Gemini servisini normal servis gibi kaydet
-builder.Services.AddTransient<GeminiService>();   // ?? bu da �nemli
+builder.Services.AddTransient<GeminiService>();   // ?? bu da önemli
 
 
 
@@ -52,6 +52,56 @@ builder.Services.AddTransient<GeminiService>();   // ?? bu da �nemli
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 var app = builder.Build();
+
+// ROL VE ADMIN KULLANICI SEED
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+
+    var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
+    var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
+
+    // Roller
+    string[] roles = new[] { "Admin", "Uye" };
+
+    foreach (var role in roles)
+    {
+        if (!await roleManager.RoleExistsAsync(role))
+        {
+            await roleManager.CreateAsync(new IdentityRole(role));
+        }
+    }
+
+    // Admin kullanıcı bilgileri
+    string adminEmail = "ogrencinumarasi@sakarya.edu.tr"; // 🔴 Bunu kendi mailinle değiştir
+    string adminPassword = "Admin123!";
+
+    var adminUser = await userManager.FindByEmailAsync(adminEmail);
+    if (adminUser == null)
+    {
+        adminUser = new ApplicationUser
+        {
+            UserName = adminEmail,
+            Email = adminEmail,
+            EmailConfirmed = true,
+            FullName = "Admin Kullanıcı"
+        };
+
+        var result = await userManager.CreateAsync(adminUser, adminPassword);
+        if (result.Succeeded)
+        {
+            await userManager.AddToRoleAsync(adminUser, "Admin");
+        }
+    }
+    else
+    {
+        if (!await userManager.IsInRoleAsync(adminUser, "Admin"))
+        {
+            await userManager.AddToRoleAsync(adminUser, "Admin");
+        }
+    }
+}
+
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())

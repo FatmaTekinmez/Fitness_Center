@@ -1,6 +1,6 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using FitnessCenter.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using FitnessCenter.Models;
 
 namespace FitnessCenter.Data
 {
@@ -61,18 +61,22 @@ namespace FitnessCenter.Data
             // =========================
             // RELATIONSHIPS
             // =========================
+
+            // Service -> GymCenter
             modelBuilder.Entity<Service>()
                 .HasOne(s => s.GymCenter)
                 .WithMany(g => g.Services)
                 .HasForeignKey(s => s.FitnessCenterId)
                 .OnDelete(DeleteBehavior.Restrict);
 
+            // Trainer -> GymCenter
             modelBuilder.Entity<Trainer>()
                 .HasOne(t => t.GymCenter)
                 .WithMany(g => g.Trainers)
                 .HasForeignKey(t => t.FitnessCenterId)
                 .OnDelete(DeleteBehavior.Restrict);
 
+            // TrainerService (çok-çok)
             modelBuilder.Entity<TrainerService>()
                 .HasKey(ts => new { ts.TrainerId, ts.ServiceId });
 
@@ -88,22 +92,27 @@ namespace FitnessCenter.Data
                 .HasForeignKey(ts => ts.ServiceId)
                 .OnDelete(DeleteBehavior.NoAction);
 
+            // Appointment -> Trainer
             modelBuilder.Entity<Appointment>()
                 .HasOne(a => a.Trainer)
                 .WithMany()
                 .HasForeignKey(a => a.TrainerId)
                 .OnDelete(DeleteBehavior.Restrict);
 
+            // Appointment -> Service
             modelBuilder.Entity<Appointment>()
                 .HasOne(a => a.Service)
                 .WithMany(s => s.Appointments)
                 .HasForeignKey(a => a.ServiceId)
                 .OnDelete(DeleteBehavior.Restrict);
 
+            // Appointment -> ApplicationUser
+            // 🔥 Kullanıcı silinince ona ait randevular da silinsin
             modelBuilder.Entity<Appointment>()
                 .HasOne(a => a.ApplicationUser)
                 .WithMany(u => u.Appointments)
-                .HasForeignKey(a => a.ApplicationUserId);
+                .HasForeignKey(a => a.ApplicationUserId)
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

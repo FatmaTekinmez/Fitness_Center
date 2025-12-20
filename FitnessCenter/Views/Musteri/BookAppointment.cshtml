@@ -1,0 +1,138 @@
+﻿@using System.Text.Json
+@model FitnessCenter.Models.ViewModels.AppointmentCreateViewModel
+
+@{
+    ViewData["Title"] = "Randevu Al";
+}
+
+<div class="glass-card p-4">
+    <h2 class="mb-3">Randevu Al</h2>
+
+    <p class="text-muted">
+        Spor Salonu: <strong>@Model.GymCenterName</strong>
+    </p>
+
+    <form asp-action="BookAppointment" method="post">
+        <div asp-validation-summary="All" class="text-danger"></div>
+
+        <input type="hidden" asp-for="GymCenterId" />
+
+        <!-- ANTRENÖR SEÇİMİ -->
+        <div class="mb-3">
+            <label asp-for="TrainerId" class="form-label"></label>
+            <select asp-for="TrainerId"
+                    class="form-select"
+                    id="trainerSelect">
+                <option value="">-- Antrenör Seçin --</option>
+                @foreach (var tr in Model.Trainers ?? Enumerable.Empty<Trainer>())
+                {
+                    var services = (tr.TrainerServices ?? Enumerable.Empty<TrainerService>())
+                    .Where(ts => ts.Service != null)
+                    .Select(ts => new { id = ts.ServiceId, name = ts.Service.Name })
+                    .ToList();
+
+                    var json = JsonSerializer.Serialize(services);
+
+                    <option value="@tr.Id" data-services='@json'>
+                        @tr.Name
+                    </option>
+                }
+            </select>
+            <span asp-validation-for="TrainerId" class="text-danger"></span>
+        </div>
+
+        <!-- SERVİS SEÇİMİ -->
+        <div class="mb-3">
+            <label asp-for="ServiceId" class="form-label"></label>
+            <select asp-for="ServiceId"
+                    class="form-select"
+                    id="serviceSelect">
+                <option value="">Önce bir antrenör seçin</option>
+            </select>
+            <span asp-validation-for="ServiceId" class="text-danger"></span>
+        </div>
+
+        <!-- BİLGİ METNİ -->
+        <div class="mb-3 text-muted" id="trainerServicesInfo">
+            Bir antrenör seçtiğinizde bu antrenörün verdiği hizmetler burada listelenir.
+        </div>
+
+        <!-- TARİH/SAAT -->
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label asp-for="StartTime" class="form-label"></label>
+                <input asp-for="StartTime" class="form-control" type="datetime-local" />
+                <span asp-validation-for="StartTime" class="text-danger"></span>
+            </div>
+            <div class="col-md-6 mb-3">
+                <label asp-for="EndTime" class="form-label"></label>
+                <input asp-for="EndTime" class="form-control" type="datetime-local" />
+                <span asp-validation-for="EndTime" class="text-danger"></span>
+            </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary mt-2">Randevu Talebi Oluştur</button>
+    </form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        const trainerSelect = document.getElementById('trainerSelect');
+        const serviceSelect = document.getElementById('serviceSelect');
+        const info = document.getElementById('trainerServicesInfo');
+
+        function clearServices() {
+            serviceSelect.innerHTML = '';
+            const opt = document.createElement('option');
+            opt.value = '';
+            opt.textContent = 'Önce bir antrenör seçin';
+            serviceSelect.appendChild(opt);
+        }
+
+        if (trainerSelect && serviceSelect && info) {
+            clearServices();
+
+            trainerSelect.addEventListener('change', function () {
+                clearServices();
+
+                const selected = trainerSelect.options[trainerSelect.selectedIndex];
+                const json = selected.getAttribute('data-services');
+
+                if (!trainerSelect.value || !json) {
+                    info.textContent = 'Bir antrenör seçtiğinizde bu antrenörün verdiği hizmetler burada listelenir.';
+                    return;
+                }
+
+                let services;
+                try {
+                    services = JSON.parse(json);
+                } catch (e) {
+                    info.textContent = 'Hizmet bilgisi yüklenemedi.';
+                    return;
+                }
+
+                if (!services.length) {
+                    info.textContent = 'Bu antrenöre tanımlı hizmet yok.';
+                    return;
+                }
+
+                info.textContent = 'Bu antrenörün verdiği hizmetler: ' +
+                    services.map(s => s.name).join(', ');
+
+                // dropdown için doldur
+                const firstOpt = document.createElement('option');
+                firstOpt.value = '';
+                firstOpt.textContent = 'Bir hizmet seçin';
+                serviceSelect.appendChild(firstOpt);
+
+                services.forEach(s => {
+                    const opt = document.createElement('option');
+                    opt.value = s.id;
+                    opt.textContent = s.name;
+                    serviceSelect.appendChild(opt);
+                });
+            });
+        }
+    </script>
+}

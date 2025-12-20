@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace FitnessCenter.Models
+﻿namespace FitnessCenter.Models
 {
     public class MusteriDashboardViewModel
     {
@@ -12,10 +10,9 @@ namespace FitnessCenter.Models
         public double? BMI { get; set; }
         public string BmiCategory { get; set; }
 
-
-        // 🔽 yeni alan
         public string GymCenterName { get; set; }
 
-        // İstersen burada randevuların özetini, seçili spor salonunu vs. de gösterebilirsin
+        // Kullanıcının bağlı olduğu spor salonunun Id'si
+        public int? GymCenterId { get; set; }
     }
 }
