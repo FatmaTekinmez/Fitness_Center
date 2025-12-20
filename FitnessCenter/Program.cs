@@ -1,6 +1,9 @@
 using FitnessCenter.Data;
 using FitnessCenter.Models;
 using Microsoft.AspNetCore.Identity;
+using FitnessCenter.Services;
+using FitnessCenter.Models;
+
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -26,6 +29,25 @@ builder.Services.ConfigureApplicationCookie(options =>
     options.LogoutPath = "/Account/Logout";
     options.AccessDeniedPath = "/Account/AccessDenied";
 });
+
+
+
+
+// Gemini ayarlarýný oku
+builder.Services.Configure<GeminiOptions>(
+    builder.Configuration.GetSection("Gemini"));
+
+// HttpClient fabrikasýný kaydet
+builder.Services.AddHttpClient();          // ?? sadece bu
+
+// Gemini servisini normal servis gibi kaydet
+builder.Services.AddTransient<GeminiService>();   // ?? bu da önemli
+
+
+
+
+
+
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();

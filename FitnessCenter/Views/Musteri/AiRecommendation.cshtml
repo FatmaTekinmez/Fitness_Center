@@ -1,0 +1,46 @@
+﻿@model FitnessCenter.Models.AiRecommendationViewModel
+
+@{
+    ViewData["Title"] = "Yapay Zekâ Öneri";
+}
+
+<div class="glass-card p-4 mt-4">
+    <h2 class="mb-3">🤖 Yapay Zekâ Destekli Antrenman Önerisi</h2>
+    <p class="text-muted">
+        Hedefini, seviyeni ve tercihlerine göre Gemini senin için özel bir spor programı önersin.
+    </p>
+
+    <form asp-action="AiRecommendation" method="post" class="mt-3">
+        <div class="mb-3">
+            <label class="form-label">Hedefin</label>
+            <input asp-for="Goal" class="form-control" placeholder="Örn: Kilo vermek, kas kazanmak, sıkılaşmak" />
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Seviyen</label>
+            <select asp-for="Level" class="form-select">
+                <option value="">Seç...</option>
+                <option>Başlangıç</option>
+                <option>Orta</option>
+                <option>İleri</option>
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Tercihlerin / Notların</label>
+            <textarea asp-for="Preferences" class="form-control" rows="3"
+                      placeholder="Evde spor, ekipman yok, dizimde sorun var, kardiyo sevmiyorum gibi..."></textarea>
+        </div>
+
+        <button type="submit" class="btn btn-primary">
+            Öneri Oluştur
+        </button>
+    </form>
+
+    @if (!string.IsNullOrWhiteSpace(Model.Recommendation))
+    {
+        <hr class="my-4" />
+        <h4 class="mb-2">Senin İçin Önerilen Plan</h4>
+        <pre class="text-light" style="white-space:pre-wrap">@Model.Recommendation</pre>
+    }
+</div>

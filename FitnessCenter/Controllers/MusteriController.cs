@@ -5,6 +5,9 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
+using FitnessCenter.Services;
+using FitnessCenter.Models;
+
 
 namespace FitnessCenter.Controllers
 {
@@ -13,11 +16,17 @@ namespace FitnessCenter.Controllers
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly ApplicationDbContext _context;
+        private readonly GeminiService _geminiService;
 
-        public MusteriController(UserManager<ApplicationUser> userManager, ApplicationDbContext context)
+
+        public MusteriController(
+         UserManager<ApplicationUser> userManager,
+         ApplicationDbContext context,
+         GeminiService geminiService)   // 🔴 EKLEDİK
         {
             _userManager = userManager;
             _context = context;
+            _geminiService = geminiService;  // 🔴 EKLEDİK
         }
 
         // KULLANICI PANELİ
@@ -51,6 +60,44 @@ namespace FitnessCenter.Controllers
 
             return View(vm);
         }
+
+
+
+
+
+        [HttpGet]
+        public IActionResult AiRecommendation()
+        {
+            return View(new AiRecommendationViewModel());
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AiRecommendation(AiRecommendationViewModel model)
+        {
+            if (string.IsNullOrWhiteSpace(model.Goal) &&
+                string.IsNullOrWhiteSpace(model.Level) &&
+                string.IsNullOrWhiteSpace(model.Preferences))
+            {
+                ModelState.AddModelError(string.Empty, "Lütfen en az bir alanı doldurun.");
+                return View(model);
+            }
+
+            var result = await _geminiService.GetWorkoutRecommendationAsync(
+                model.Goal,
+                model.Level,
+                model.Preferences
+            );
+
+            model.Recommendation = result;
+            return View(model);
+        }
+
+
+
+
+
+
+        
 
 
         [HttpPost]
